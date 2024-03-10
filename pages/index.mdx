@@ -1,11 +1,75 @@
-# Introduction
+# pql
  
-Welcome to Nextra! This is a basic docs template. You can use it as a starting point for your own project :)
+Welcome to pql's doc site. All of the code is available [here](https://github.com/runreveal/pql-docs). If you notice any
+typos or want to contribute, please open an issue or send a PR.
 
-## What is Nextra?
+## What is pql?
 
-A **simple**, **powerful** and **flexible** site generation framework with everything you love from Next.js.
+Pipelined Query Language (pql) a query language (inspired by the Kusto Query
+Language) and Go library that compiles into SQL. It has been specifically
+tested to work with the Clickhouse SQL dialect, but the generated SQL is
+intentionally database agnostic. This repository contains a Go library, and a
+CLI to invoke the library.
 
-## Documentation
+For example, the following expression:
 
-The documentation is available at [https://nextra.site](https://nextra.site).
+```
+StormEvents
+| where DamageProperty > 5000 and EventType == "Thunderstorm Wind"
+| top 3 by DamageProperty
+```
+
+will be compiled to SQL that is similar to:
+```
+SELECT *
+FROM StormEvents
+WHERE DamageProperty > 5000 AND EventType = 'Thunderstorm Wind'
+ORDER BY DamageProperty DESC
+LIMIT 3;
+```
+
+## Getting Started
+If you'd like to see a demo along with some examples, check out https://pql.dev.
+
+To use pql in your go code, a minimal example might look like this
+
+```
+package main
+
+import (
+	"github.com/runreveal/pql"
+)
+
+func main() {
+	sql, err := pql.Compile("users | project id, email | limit 5")
+	if err != nil {
+		panic(err)
+	}
+	println(sql)
+}
+```
+
+Running this program should give you the following output
+
+```
+$ go run test.go
+
+WITH "__subquery0" AS (SELECT "id" AS "id", "email" AS "email" FROM "users")
+SELECT * FROM "__subquery0" LIMIT 5;
+```
+
+## Frequently asked questions
+### What is pql?
+`pql` is an open-source pipelined query language that compiles to SQL. It's written in Go and released under the Apache 2.0 license.
+
+### Why pql?
+`pql` is designed with the Unix philosophy in mind. It's designed to be a small, efficient, and make developing queries simple by piping the result of each statement into the next.
+
+### Where's the code?
+The pql source code is available on GitHub. You can find it here!
+
+### Why did we build pql?
+Splunk, Sumologic, and Microsoft all have proprietary languages similar to pql. Open source databases can't compete because they all support SQL. pql is designed to bridge that gap by providing a simple but powerful interface.
+
+
+

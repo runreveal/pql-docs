@@ -1,0 +1,43 @@
+# Command line interface
+The pql library comes with a CLI for easy use of the library when shelling out
+or for testing / development usage.
+
+## Installation
+
+```
+go install github.com/runreveal/pql
+```
+
+## Usage
+The command line interface is basic, and only has a `-h` and `-o` option.
+```
+$ pql --help
+Translate Pipeline Query Language into SQL
+
+Usage:
+  pql [options] [FILE [...]]
+
+Flags:
+  -h, --help            help for pql
+  -o, --output string   file to write SQL to (defaults to stdout)
+```
+
+The cli supports reading from stdin or a file, and writing to stdout or a file. By default, stdin
+and stdout are used, but you can specify an input file by passing a filename as an argument to
+the `pql` command, and you can specify an output file by using the `-o` flag.
+```
+$ echo "users | project user_id, user_email" | pql -o example.sql
+$ cat example.sql 
+SELECT "user_id" AS "user_id", "user_email" AS "user_email" FROM "users";
+```
+
+## Multiple Queries
+Multiple pql queries can be passed to the pql cli at once. These queries _must_ be separated by a semicolon (`;`)
+
+```
+$ echo "users | project user_id, user_email; workspaces | project workspace_id, workspace_name" | ./pql               
+SELECT "user_id" AS "user_id", "user_email" AS "user_email" FROM "users";
+
+SELECT "workspace_id" AS "workspace_id", "workspace_name" AS "workspace_name" FROM "workspaces";
+```
+The result is multiple SQL queries that are also delimited with a semicolon.

@@ -1,0 +1,20 @@
+# Using pql with postgres 
+Functions that are unknown (i.e. unlisted in the scalar functions docs) are passed through to the resulting SQL query.
+
+Here's a basic example, finding email addresses that match gmail
+using Clickhouse's `match` function (described here)[https://clickhouse.com/docs/en/sql-reference/functions/string-search-functions#match]
+```
+users
+    | project user_email
+    | where match(user_email, '@gmail.com')
+```
+
+Which translates successfully to this SQL statement:
+```
+WITH "__subquery0" AS (SELECT "user_email" AS "user_email" FROM "users")
+SELECT * FROM "__subquery0" WHERE match("user_email", '@gmail.com')
+```
+
+# Functions
+Consult the postgres documentation for a full list of functions available:
+ - [https://www.postgresql.org/docs/9.5/functions.html](https://www.postgresql.org/docs/9.5/functions.html)
