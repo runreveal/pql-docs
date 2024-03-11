@@ -3,11 +3,11 @@ Functions that are unknown (i.e. unlisted in the scalar functions docs) are pass
 resulting SQL query.
 
 Here's a basic example, finding email addresses that match gmail
-using postgres's `match` function [described here](https://clickhouse.com/docs/en/sql-reference/functions/string-search-functions#match)
+using Clickhouse's `match` function [described here](https://clickhouse.com/docs/en/sql-reference/functions/string-search-functions#match)
 ```
 users
     | project user_email
-    | where like(user_email, '%@gmail.com')
+    | where match(user_email, '@gmail.com')
 ```
 
 Which translates successfully to this SQL statement:
