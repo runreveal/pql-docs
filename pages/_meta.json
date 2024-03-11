@@ -2,11 +2,13 @@
   "index": "Introduction",
   "language": "Language",
   "about": {
-    "title": "About",
-    "type": "page"
+    "title": "Demo",
+    "type": "page",
+    "href": "https://pql.dev",
+    "newWindow": true
   },
   "contact": {
-    "title": "Contact ↗",
+    "title": "Contact",
     "type": "page",
     "href": "https://runreveal.com/contact",
     "newWindow": true

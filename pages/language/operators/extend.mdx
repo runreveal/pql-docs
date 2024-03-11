@@ -36,16 +36,13 @@ A copy of the input tabular result set, such that:
 > [!NOTE]
 > The `extend` operator adds a new column to the input result set, which does
   **not** have an index. In most cases, if the new column is set to be exactly
-  the same as an existing table column that has an index, Kusto can automatically
+  the same as an existing table column that has an index, pql can automatically
   use the existing index. However, in some complex scenarios this propagation is
-  not done. In such cases, if the goal is to rename a column, use the [`project-rename` operator](projectrenameoperator.md) instead.
+  not done. 
 
 ## Example
 
-> [!div class="nextstepaction"]
-> <a href="https://dataexplorer.azure.com/clusters/help/databases/Samples?query=H4sIAAAAAAAAAwsuyS/KdS1LzSsp5qpRKCjKz0pNLlFwzUsJycxN1VEILkksKgExgZKpFSWpeSkKLqVFiSWZ+XkKtjBlCroIdQCqSrMYUAAAAA==" target="_blank">Run the query</a>
-
-```kusto
+```pql
 StormEvents
 | project EndTime, StartTime
 | extend Duration = EndTime - StartTime
@@ -65,7 +62,3 @@ The following table shows only the first 10 results. To see the full output, run
 |2007-01-01T05:00:00Z| 2007-01-01T00:00:00Z |05:00:00|
 |2007-01-01T06:00:00Z| 2007-01-01T00:00:00Z |06:00:00|
 |2007-01-01T06:00:00Z| 2007-01-01T00:00:00Z |06:00:00|
-
-## See also
-
-* Use [series_stats](series-statsfunction.md) to return multiple columns

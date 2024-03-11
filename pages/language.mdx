@@ -2,4 +2,23 @@
 The language is heavily based on Microsoft's kql, and we also include references on how to use
 scalar functions in the underlying database.
 
-When using pql, it's important to know what underlying database you are querying.
+When using pql, it's important to know what underlying database you are querying in order to effectively
+use that database's underlying functions.
+
+pql's valuable proposition is largely that is parses scalar functions and specific pql operators that have been 
+translated from kql's language specification.
+## Operators
+Click [here](operators) to see the list of pql supported operators.
+
+## Scalar Functions
+Click [here](scalar-functions) to see the list of pql supported scalar functions.
+
+## Using other functions.
+The functions implemented within underlying databases, like clickhouse, postgres, and more are supported by default in pql
+by passing those function calls through to the underlying database. Those function calls are not validated during the translation
+process, and instead an unsupported function call will result in a database error.
+
+To read more about using pql with another database, read these docs:
+ - [Using pql with Clickhouse](language/using-pql-with-clickhouse)
+ - [Using pql with Postgres](language/using-pql-with-postgres)
+

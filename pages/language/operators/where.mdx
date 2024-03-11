@@ -36,9 +36,9 @@ Rows in *T* for which *Predicate* is `true`.
 
 ## Performance tips
 
-* **Use simple comparisons** between column names and constants. ('Constant' means constant over the table - so `now()` and `ago()` are OK, and so are scalar values assigned using a [`let` statement](./letstatement.md).)
+* **Use simple comparisons** between column names and constants. ('Constant' means constant over the table - so `now()` is OK. `ago()` will be a specific function according to your database.
 
-    For example, prefer `where Timestamp >= ago(1d)` to `where bin(Timestamp, 1d) == ago(1d)`.
+    For example, prefer `where Timestamp >= minus(now(), toDayInterval(1d))` when using Clickhouse
 
 * **Simplest terms first**: If you have multiple clauses conjoined with `and`, put first the clauses that involve just one column. So `Timestamp > ago(1d) and OpId == EventId` is better than the other way around.
 
@@ -52,10 +52,7 @@ The following query returns storm records that report damaged property, are floo
 
 Notice that we put the comparison between two columns last, as the where operator can't use the index and forces a scan.
 
-> [!div class="nextstepaction"]
-> <a href="https://dataexplorer.azure.com/clusters/help/databases/Samples?query=H4sIAAAAAAAAAwsuyS/KdS1LzSsp5qpRKCjKz0pNLlFwScxNTE8NKMovSC0qqdRRACsIqSxI1VFwSk3PzPPJT04syczPA8rkpcA4QP3lGalFqWi6FewUDLgUgCAxLwVhkIKtrYKSW05+fooSXBLFaAVFW2TDAe7+E2GoAAAA" target="_blank">Run the query</a>
-
-```kusto
+```pql
 StormEvents
 | project DamageProperty, EventType, BeginLocation, EndLocation
 | where DamageProperty > 0
@@ -77,15 +74,3 @@ The following table only shows the top 10 results. To see the full output, run t
 |10000|Flood|GOODHOPE WEST MILFORD|
 |5000 |Flood|DUNKIRK FOREST|
 |20000|Flood|FARMINGTON MANNINGTON|
-
-### Check if column contains string
-
-The following query returns the rows in which the word "cow" appears in any column.
-
-> [!div class="nextstepaction"]
-> <a href="https://dataexplorer.azure.com/clusters/help/databases/Samples?query=H4sIAAAAAAAAAwsuyS/KdS1LzSsp5uWqUSjPSC1KVdBSyEgsVlBKzi9XAgC3DyzDIAAAAA==" target="_blank">Run the query</a>
-
-```kusto
-StormEvents
-| where * has "cow"
-```
