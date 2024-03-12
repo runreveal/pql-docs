@@ -1,8 +1,11 @@
 import React from 'react'
 import { DocsThemeConfig } from 'nextra-theme-docs'
+import Footer from './Footer'
+import Header from './Header'
 
 const config: DocsThemeConfig = {
-  logo: <span className="font-mono">pql | </span>,
+  logo: <Header />,
+  logoLink: 'https://pql.dev',
   project: {
     link: 'https://github.com/runreveal/pql',
   },
@@ -11,7 +14,7 @@ const config: DocsThemeConfig = {
   },
   docsRepositoryBase: 'https://github.com/runreveal/pql-docs',
   footer: {
-    text: 'pql is a project by runreveal, copyright 2024',
+    component: <Footer />,
   },
   head: (
     <>
